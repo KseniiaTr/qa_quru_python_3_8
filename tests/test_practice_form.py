@@ -1,8 +1,7 @@
 from selene.support.shared import browser
 from selene import have
 from selene import command
-from tests import personal_info, adress, button, subject
-from tests.modul import checkboxes, datepicker, dropdown, upload_image
+from tests import page_objects
 
 
 def test_practice_form(size_browser):
@@ -12,24 +11,21 @@ def test_practice_form(size_browser):
     ads.with_(timeout=5).wait_until(have.size_greater_than_or_equal(3))
     ads.perform(command.js.remove)
 
-    personal_info.type_personal_info(browser, '#firstName', 'Alex')
-    personal_info.type_personal_info(browser, '#lastName', 'Alekseev')
-    personal_info.type_personal_info(browser, '#userEmail', 'alexalekseev@gmail.com')
-    personal_info.type_personal_info(browser, '#userNumber', '8910123121')
+    page_objects.type_personal_info('Alex', 'Alekseev', 'alexalekseev@gmail.com', '8910123121')
+    page_objects.radio_button_gender('[name=gender]', 'Male')
 
-    checkboxes.choose_gender(browser, '[name=gender]', 'Male')
-    datepicker.pick_date(browser)
-    subject.type_subject(browser, '#subjectsInput', 'History')
-    checkboxes.choose_hobbies(browser, '[type=checkbox][id=hobbies-checkbox-3]+label', 'Music')
+    page_objects.data_picker()
 
-    upload_image.add_image(browser, '#uploadPicture', '../resources/Photo_test_yellow.png')
+    page_objects.type_subject('#subjectsInput', 'History')
+    page_objects.checkbox_hobby('[type=checkbox][id=hobbies-checkbox-3]+label', 'Music')
 
-    adress.print_adress(browser, '#currentAddress', 'Delhi, Pyatnitskaya st 12/12')
+    page_objects.upload_img()
 
-    dropdown.city_state(browser, '#react-select-3-input', 'NCR')
-    dropdown.city_state(browser, '#react-select-4-input', 'Delhi')
+    page_objects.type_address('#currentAddress', 'Delhi, Pyatnitskaya st 12/12')
+    page_objects.dropdown_state('#react-select-3-input', 'NCR')
+    page_objects.dropdown_city('#react-select-4-input', 'Delhi')
 
-    button.button_submit(browser, '#submit')
+    page_objects.button_submit('#submit')
 
 
 def test_check_info_in_table():
